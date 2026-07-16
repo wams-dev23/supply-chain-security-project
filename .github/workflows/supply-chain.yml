@@ -54,13 +54,16 @@ jobs:
           syft "${{ steps.ref.outputs.ref }}" -o cyclonedx-json > sbom.cdx.json
 
       # ---- Scan : casse si CRITICAL corrigeable ----
-      - name: Scan (Grype) — gate sur CRITICAL
-        uses: anchore/scan-action@v4
-        with:
-          image: ${{ steps.ref.outputs.ref }}
-          fail-build: true
-          severity-cutoff: critical
-          only-fixed: true
+      # anchore/scan-action@v4 épingle grype v0.80.0, dont la base de vulnérabilités n'est plus
+      # alimentée : grype refuse de la charger ("built 18 weeks ago, max allowed age is 5 days")
+      # et l'action traduit ce plantage en "critical trouvée". La gate cassait donc sur une base
+      # morte, pas sur une CVE. On installe grype directement, comme au Lab 1.
+      - name: Install Grype
+        run: curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
+      # grype lit .grype.yaml à la racine : only-fixed + fail-on-severity critical.
+      # Sortie ≠ 0 sur CRITICAL corrigeable ⇒ le job s'arrête, rien n'est signé.
+      - name: Scan (Grype) — gate sur CRITICAL corrigeable
+        run: grype "${{ steps.ref.outputs.ref }}" -o table
 
       # ---- Signature keyless ----
       # cosign v3 stocke signature et attestations via l'API OCI referrers et ne crée plus les
