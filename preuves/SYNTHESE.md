@@ -113,7 +113,12 @@ database was built 18 weeks ago (max allowed age is 5 days)`) et l'action tradui
 un faux positif permanent, aussi trompeur qu'un faux négatif. Corrigé en installant Grype
 directement, comme au Lab 1.
 
-**Actions est désactivé par défaut sur un fork** : le premier `git push` n'a déclenché aucun run.
+**Actions est désactivé par défaut sur un fork**, et le trigger `push` reste inerte même après
+avoir activé les permissions Actions par API : tous les runs verts de ce rendu ont été lancés en
+`workflow_dispatch`. GitHub exige une activation manuelle dans l'onglet **Actions** du fork
+(bouton « I understand my workflows, go ahead and enable them »), qu'aucune API n'expose. Vérifié
+avec un commit vide : aucun run déclenché. **À faire dans l'interface pour que le pipeline parte
+réellement à chaque push sur `main`**, comme l'exige le Lab 5.1.
 
 **Un package GHCR créé par un push manuel reste orphelin** (rattaché à aucun dépôt), et le
 `GITHUB_TOKEN` du workflow n'a alors aucun droit d'écriture dessus
