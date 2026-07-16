@@ -1,0 +1,11 @@
+Error from server: admission webhook "mutate.kyverno.svc-fail" denied the request: 
+
+resource Pod/app/fakeci was blocked due to the following policies 
+
+require-provenance-keyless:
+  verifier-provenance-keyless: 'image attestations verification failed, verifiedCount:
+    0, requiredCount: 1, error: no matching attestations: '
+verify-image-signature-keyless:
+  verifier-signature-keyless: 'failed to verify image ghcr.io/wams-dev23/scs-demo-app-ci@sha256:acf2d3295b996bf212b3c89026b3e198c9438c73893c44eaedaf69a918956b00:
+    .attestors[0].entries[0].keyless: no matching signatures: error verifying bundle:
+    empty key'

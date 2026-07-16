@@ -27,7 +27,10 @@ spec:
               kinds: [Pod]
       verifyImages:
         - imageReferences:
-            - "ghcr.io/wams-dev23/scs-demo-app*"
+            # scs-demo-app UNIQUEMENT : "scs-demo-app*" matcherait aussi
+            # scs-demo-app-ci, signé en keyless par la CI (policies 05/06).
+            - "ghcr.io/wams-dev23/scs-demo-app:*"
+            - "ghcr.io/wams-dev23/scs-demo-app@*"
           mutateDigest: true          # réécrit le tag en digest (empêche la substitution)
           verifyDigest: true
           required: true

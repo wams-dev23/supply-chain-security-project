@@ -25,7 +25,10 @@ spec:
               kinds: [Pod]
       verifyImages:
         - imageReferences:
-            - "ghcr.io/wams-dev23/scs-demo-app*"
+            # scs-demo-app UNIQUEMENT : "scs-demo-app*" matcherait aussi
+            # scs-demo-app-ci, signé en keyless par la CI (policies 05/06).
+            - "ghcr.io/wams-dev23/scs-demo-app:*"
+            - "ghcr.io/wams-dev23/scs-demo-app@*"
           required: true
           attestations:
             - type: https://slsa.dev/provenance/v0.2

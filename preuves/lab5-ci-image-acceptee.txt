@@ -1,0 +1,15 @@
+=== Lab 5 — image CI signée keyless : ACCEPTÉE par le cluster ===
+NAME     READY   STATUS    RESTARTS   AGE   IP            NODE         NOMINATED NODE   READINESS GATES
+ci-app   1/1     Running   0          60s   10.244.1.17   scs-worker   <none>           <none>
+
+Image admise :
+ghcr.io/wams-dev23/scs-demo-app-ci@sha256:2b9cbacb3c8676f51557d89e057343dc31aefd3577876b4d0e0f63771681d2fb
+
+=== 6 policies actives ===
+NAME                             ADMISSION   BACKGROUND   READY   AGE   MESSAGE
+allowed-registries               true        true         True    25m   Ready
+disallow-latest-tag              true        true         True    25m   Ready
+require-provenance-attestation   true        false        True    25m   Ready
+require-provenance-keyless       true        false        True    79s   Ready
+verify-image-signature           true        false        True    25m   Ready
+verify-image-signature-keyless   true        false        True    79s   Ready

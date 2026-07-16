@@ -1,0 +1,38 @@
+# Politique 5 — Exiger une signature cosign KEYLESS émise par NOTRE workflow (Lab 5.3).
+# Aucune clé publique ici : l'attestor est une IDENTITÉ (le workflow, sur cette branche).
+# Un attaquant qui pousse une image ne peut pas se faire passer pour ce workflow : il lui
+# faudrait l'OIDC du runner GitHub.
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: verify-image-signature-keyless
+  annotations:
+    policies.kyverno.io/title: Vérifier la signature keyless (CI)
+    policies.kyverno.io/category: Supply Chain Security
+    policies.kyverno.io/description: >-
+      Refuse toute image CI non signée par le workflow supply-chain.yml sur refs/heads/main.
+spec:
+  validationFailureAction: Enforce
+  background: false
+  webhookTimeoutSeconds: 30
+  rules:
+    - name: verifier-signature-keyless
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+      verifyImages:
+        - imageReferences:
+            - "ghcr.io/wams-dev23/scs-demo-app-ci:*"
+            - "ghcr.io/wams-dev23/scs-demo-app-ci@*"
+          mutateDigest: true
+          verifyDigest: true
+          required: true
+          attestors:
+            - count: 1
+              entries:
+                - keyless:
+                    issuer: "https://token.actions.githubusercontent.com"
+                    subject: "https://github.com/wams-dev23/supply-chain-security-project/.github/workflows/supply-chain.yml@refs/heads/main"
+                    rekor:
+                      url: "https://rekor.sigstore.dev"

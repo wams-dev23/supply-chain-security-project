@@ -1,0 +1,36 @@
+# Politique 6 — Exiger l'attestation de PROVENANCE SLSA de l'image CI, en mode keyless (Lab 5.3).
+# Même logique que la 04, mais l'attestor est l'identité du workflow au lieu d'une clé.
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-provenance-keyless
+  annotations:
+    policies.kyverno.io/title: Exiger la provenance SLSA (CI, keyless)
+    policies.kyverno.io/category: Supply Chain Security
+    policies.kyverno.io/description: >-
+      Refuse toute image CI sans attestation de provenance SLSA émise par notre workflow.
+spec:
+  validationFailureAction: Enforce
+  background: false
+  webhookTimeoutSeconds: 30
+  rules:
+    - name: verifier-provenance-keyless
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+      verifyImages:
+        - imageReferences:
+            - "ghcr.io/wams-dev23/scs-demo-app-ci:*"
+            - "ghcr.io/wams-dev23/scs-demo-app-ci@*"
+          required: true
+          attestations:
+            - type: https://slsa.dev/provenance/v0.2
+              attestors:
+                - count: 1
+                  entries:
+                    - keyless:
+                        issuer: "https://token.actions.githubusercontent.com"
+                        subject: "https://github.com/wams-dev23/supply-chain-security-project/.github/workflows/supply-chain.yml@refs/heads/main"
+                        rekor:
+                          url: "https://rekor.sigstore.dev"

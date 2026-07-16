@@ -1,0 +1,12 @@
+=== Lab 5.4 — vérification keyless de l'image produite par la CI ===
+$ cosign verify --certificate-identity <workflow> --certificate-oidc-issuer <github> ghcr.io/wams-dev23/scs-demo-app-ci@sha256:2b9cbacb3c8676f51557d89e057343dc31aefd3577876b4d0e0f63771681d2fb
+
+Verification for ghcr.io/wams-dev23/scs-demo-app-ci@sha256:2b9cbacb3c8676f51557d89e057343dc31aefd3577876b4d0e0f63771681d2fb --
+The following checks were performed on each of these signatures:
+  - The cosign claims were validated
+  - Existence of the claims in the transparency log was verified offline
+  - The code-signing certificate was verified using trusted certificate authority certificates
+
+Identité du signataire :
+https://github.com/wams-dev23/supply-chain-security-project/.github/workflows/supply-chain.yml@refs/heads/main
+https://token.actions.githubusercontent.com
