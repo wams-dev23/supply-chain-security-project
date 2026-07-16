@@ -17,9 +17,14 @@ spec:
     spec:
       containers:
         - name: app
-          image: ghcr.io/<votre-user>/scs-demo-app@sha256:REMPLACEZ_PAR_VOTRE_DIGEST
+          image: ghcr.io/wams-dev23/scs-demo-app@sha256:4e4ef40c84943171fe11ebddd39e3fe9710b9a206f60f775d91e3e1c8aef9076
           ports:
             - containerPort: 8080
+          volumeMounts:
+            # gunicorn a besoin d'écrire ses fichiers de worker : /tmp inscriptible
+            # sans renoncer à readOnlyRootFilesystem
+            - name: tmp
+              mountPath: /tmp
           readinessProbe:
             httpGet: { path: /health, port: 8080 }
             initialDelaySeconds: 3
@@ -33,9 +38,14 @@ spec:
             limits: { cpu: "250m", memory: "128Mi" }
           securityContext:
             runAsNonRoot: true
+            # uid numérique obligatoire : kubelet ne peut pas vérifier le USER appuser du Dockerfile
+            runAsUser: 10001
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities: { drop: ["ALL"] }
+      volumes:
+        - name: tmp
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service

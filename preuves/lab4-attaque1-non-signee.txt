@@ -1,0 +1,10 @@
+Error from server: admission webhook "mutate.kyverno.svc-fail" denied the request: 
+
+resource Pod/app/pirate was blocked due to the following policies 
+
+require-provenance-attestation:
+  verifier-provenance: 'image attestations verification failed, verifiedCount: 0,
+    requiredCount: 1, error: no matching attestations: '
+verify-image-signature:
+  verifier-signature-cosign: 'failed to verify image ghcr.io/wams-dev23/scs-demo-app@sha256:84c64368b81b10862f5e481eb609e503c412fe7f8719b58d9b6e06a0ca442d61:
+    .attestors[0].entries[0].keys: no signatures found'

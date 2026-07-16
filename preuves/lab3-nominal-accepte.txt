@@ -1,0 +1,8 @@
+NAME                           READY   STATUS    RESTARTS   AGE
+scs-demo-app-bb5f98f44-297vl   1/1     Running   0          43s
+scs-demo-app-bb5f98f44-5jxq7   1/1     Running   0          52s
+NAME                             ADMISSION   BACKGROUND   READY   AGE    MESSAGE
+allowed-registries               true        true         True    7m8s   Ready
+disallow-latest-tag              true        true         True    7m8s   Ready
+require-provenance-attestation   true        false        True    7m7s   Ready
+verify-image-signature           true        false        True    7m7s   Ready

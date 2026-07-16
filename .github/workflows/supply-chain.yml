@@ -44,8 +44,10 @@ jobs:
       # ---- SBOM ----
       - name: Install Syft
         uses: anchore/sbom-action/download-syft@v0
-      - name: Generate SBOM (SPDX)
-        run: syft "${{ steps.ref.outputs.ref }}" -o spdx-json > sbom.spdx.json
+      - name: Generate SBOM (SPDX + CycloneDX)
+        run: |
+          syft "${{ steps.ref.outputs.ref }}" -o spdx-json > sbom.spdx.json
+          syft "${{ steps.ref.outputs.ref }}" -o cyclonedx-json > sbom.cdx.json
 
       # ---- Scan : casse si CRITICAL corrigeable ----
       - name: Scan (Grype) — gate sur CRITICAL
@@ -57,17 +59,23 @@ jobs:
           only-fixed: true
 
       # ---- Signature keyless ----
+      # cosign v3 stocke signature et attestations via l'API OCI referrers et ne crée plus les
+      # tags .sig/.att que Kyverno recherche : on reste sur la v2 tant que Kyverno n'a pas suivi.
       - name: Install cosign
         uses: sigstore/cosign-installer@v3
+        with:
+          cosign-release: 'v2.5.3'
       - name: Sign image (keyless)
         run: cosign sign --yes "${{ steps.ref.outputs.ref }}"
 
       # ---- Attestation SBOM ----
-      - name: Attest SBOM
+      # CycloneDX et non SPDX : l'attestation SPDX (~2,3 Mo) dépasse la limite de contexte de
+      # Kyverno (2 Mio, codée en dur), qui refuse alors l'image légitime.
+      - name: Attest SBOM (CycloneDX)
         run: |
           cosign attest --yes \
-            --predicate sbom.spdx.json \
-            --type spdxjson \
+            --predicate sbom.cdx.json \
+            --type cyclonedx \
             "${{ steps.ref.outputs.ref }}"
 
       # ---- Attestation de provenance SLSA ----

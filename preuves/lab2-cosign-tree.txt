@@ -1,0 +1,6 @@
+📦 Supply Chain Security Related artifacts for an image: ghcr.io/wams-dev23/scs-demo-app@sha256:8606ba6018dbf7688681305b2b4832187b37717ce257d9a93d63c82be24b216d
+└── 🔐 Signatures for an image tag: ghcr.io/wams-dev23/scs-demo-app:sha256-8606ba6018dbf7688681305b2b4832187b37717ce257d9a93d63c82be24b216d.sig
+   └── 🍒 sha256:b1d7810c8a0182fc02acd5ec3fe9d42ad94fafbef05019a8eb91ac84ad9784dd
+└── 💾 Attestations for an image tag: ghcr.io/wams-dev23/scs-demo-app:sha256-8606ba6018dbf7688681305b2b4832187b37717ce257d9a93d63c82be24b216d.att
+   ├── 🍒 sha256:f732544f4f5af9fd99a8e8a952b5f2a65fdbd85b7a4b5246f8770252b192c141
+   └── 🍒 sha256:3d9633b1289deb66739205548afd40917cca478af34354483bc387980842a591

@@ -25,7 +25,7 @@ spec:
               kinds: [Pod]
       verifyImages:
         - imageReferences:
-            - "ghcr.io/<votre-user>/scs-demo-app*"
+            - "ghcr.io/wams-dev23/scs-demo-app*"
           required: true
           attestations:
             - type: https://slsa.dev/provenance/v0.2
@@ -35,7 +35,8 @@ spec:
                     - keys:
                         publicKeys: |-
                           -----BEGIN PUBLIC KEY-----
-                          COLLEZ_ICI_LE_CONTENU_DE_cosign.pub
+                          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEdIxkz7kcAEg/Rd3N/SGGiwOP4E/V
+                          xeDSAhpKiV7ZMAtrtvHEbvYRwcygNkBS53sUoxFfuQ0rqnQHWwemc818iQ==
                           -----END PUBLIC KEY-----
               # ---- BONUS : conditions sur le CONTENU de la provenance ----
               # conditions:

@@ -24,7 +24,10 @@ spec:
         pattern:
           spec:
             containers:
-              - image: "!*:latest"
+              # "!*:latest" ne suffit pas : verifyImages (mutateDigest) réécrit l'image en
+              # "repo:latest@sha256:..." AVANT la validation, et la chaîne ne se termine
+              # alors plus par ":latest". Le joker final rattrape cette forme mutée.
+              - image: "!*:latest*"
     - name: exiger-tag-explicite
       match:
         any:

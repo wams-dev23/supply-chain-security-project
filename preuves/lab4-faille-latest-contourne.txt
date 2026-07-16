@@ -1,0 +1,10 @@
+FAILLE : ':latest' signé ADMIS malgré la policy 02-disallow-latest
+Cause : verifyImages mutateDigest:true réécrit le tag en digest dans le webhook de
+mutation, AVANT que les règles validate ne s'exécutent. La règle '!*:latest' évalue
+donc une image de la forme @sha256:... et passe systématiquement.
+
+$ kubectl run uselatest2 --image=ghcr.io/wams-dev23/scs-demo-app:latest -n app
+pod/uselatest2 created     <-- AURAIT DÛ ÊTRE REFUSÉ
+
+Image réellement enregistrée dans le pod admis :
+ghcr.io/wams-dev23/scs-demo-app:latest@sha256:4e4ef40c84943171fe11ebddd39e3fe9710b9a206f60f775d91e3e1c8aef9076

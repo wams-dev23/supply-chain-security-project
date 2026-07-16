@@ -1,0 +1,7 @@
+Error from server: admission webhook "validate.kyverno.svc-fail" denied the request: 
+
+resource Pod/app/fromdockerhub was blocked due to the following policies 
+
+allowed-registries:
+  verifier-registry: 'validation error: Image refusée : seules les images de ghcr.io/wams-dev23/
+    sont autorisées. rule verifier-registry failed at path /spec/containers/0/image/'
