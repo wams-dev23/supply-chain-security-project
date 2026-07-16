@@ -14,7 +14,11 @@ permissions:
   id-token: write        # OIDC → signature keyless (Fulcio/Rekor)
 
 env:
-  IMAGE: ghcr.io/${{ github.repository_owner }}/scs-demo-app
+  # Package distinct de celui poussé à la main aux labs 0-2 : un package GHCR créé par un push
+  # manuel reste orphelin (rattaché à aucun dépôt), et le GITHUB_TOKEN du workflow n'a alors
+  # aucun droit dessus. Créé par la CI, il est rattaché au dépôt automatiquement.
+  # Les policies Kyverno matchent déjà "ghcr.io/<owner>/scs-demo-app*".
+  IMAGE: ghcr.io/${{ github.repository_owner }}/scs-demo-app-ci
 
 jobs:
   build-sign-attest:
